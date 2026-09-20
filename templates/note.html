@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} — Связь 11{% endblock %}
+
+{% block content %}
+
+<aside class="file-sidebar">
+    <div class = "file-sidebar-inner">
+        <div class = "logo-container">
+        <a href="{{ url_for('index') }}" class="logo">
+            Связь 11
+        </a>
+
+        <span class="site-title">
+            База знаний
+        </span>
+        </div>
+    <div class="sidebar-title">
+        ФАЙЛЫ
+    </div>
+
+    {% macro render_tree(items) %}
+    <ul class="file-tree">
+
+        {% for item in items %}
+
+        {% if item.type == "directory" %}
+
+        <li>
+            <details closed>
+                <summary>
+                    <span class="folder-icon">></span>
+                    {{ item.name }}
+                </summary>
+
+                {{ render_tree(item.children) }}
+            </details>
+        </li>
+
+        {% else %}
+
+        <li>
+            <a href="{{ url_for('note', path=item.path) }}" class="{% if item.active %}active{% endif %}">
+                {{ item.name }}
+            </a>
+        </li>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </ul>
+    {% endmacro %}
+
+    {{ render_tree(tree) }}
+</div>
+</aside>
+
+<div class="page">
+
+    <article id="content" class="markdown">
+        <h1 class = "h1-main-title">{{note.name}}</h1>
+
+        {{ content | safe }}
+
+    </article>
+
+
+
+</div>
+
+<nav class="toc-container">
+    {% if has_toc %}
+    <p>На этой странице:</p>
+    {% endif %}
+    <div class="toc-inner">
+
+        {{ toc | safe }}
+    </div>
+
+</nav>
+
+<script>
+
+    const headings = document.querySelectorAll(
+        "#content h2, #content h3, #content h4, #content h5, #content h6"
+    );
+
+    const tocLinks = document.querySelectorAll(
+        ".toc a"
+    );
+
+
+    function setActiveHeading(id) {
+
+        tocLinks.forEach(link => {
+
+            link.classList.toggle(
+                "active",
+                link.getAttribute("href") === "#" + id
+            );
+
+        });
+
+    }
+
+
+    const observer = new IntersectionObserver(
+        entries => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+
+                    setActiveHeading(
+                        entry.target.id
+                    );
+
+                }
+
+            });
+
+        },
+        {
+            rootMargin: "-100px 0px -70% 0px",
+            threshold: 0
+        }
+    );
+
+
+    headings.forEach(heading => {
+
+        observer.observe(heading);
+
+    });
+
+
+    tocLinks.forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            const id = link
+                .getAttribute("href")
+                .substring(1);
+
+            setActiveHeading(id);
+
+        });
+
+    });
+
+</script>
+<script>
+    function toggleSidebar() {
+        const layout = document.querySelector(".file-sidebar");
+
+        layout.classList.toggle("sidebar-hidden");
+    }
+</script>
+
+
+{% endblock %}
