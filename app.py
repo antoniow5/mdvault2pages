@@ -1,25 +1,21 @@
-from pathlib import Path
-from dataclasses import dataclass
-from xml.etree import ElementTree as etree
-
-from flask import Flask, abort, render_template
+import os
 import markdown
 
-from markdown.inlinepatterns import InlineProcessor
-from markdown.extensions import Extension
-from .callout_extension import ObsidianCalloutsExtension
+from dotenv import load_dotenv
+from pathlib import Path
+from dataclasses import dataclass
 
-# ============================================================
-# Configuration
-# ============================================================
+from flask import Flask, abort, render_template
 
-VAULT = Path.home() / "Documents" / "Obsidian Vault"
-# INDEX_NOTE = Path(VAULT / "index.md")
+from extensions.callout_extension import ObsidianCalloutsExtension
+from extensions.wikilink_extension import WikiLinkExtension
 
 
-# ============================================================
-# Note
-# ============================================================
+load_dotenv()
+
+VAULT = Path(os.environ["VAULT"])
+INDEX_NOTE = VAULT / os.environ.get("INDEX_NOTE", "index.md")
+
 
 @dataclass
 class Note:
@@ -41,96 +37,8 @@ def add_notes(vault: Path) -> list[Note]:
                 full_path=path
             )
         )
-
     return notes
 
-
-
-
-# ============================================================
-# Wiki links: [[Note]]
-# ============================================================
-
-class WikiLinkProcessor(InlineProcessor):
-
-    def __init__(self, pattern, md, notes):
-        super().__init__(pattern, md)
-        self.notes = notes
-
-    def handleMatch(self, m, data):
-        target = m.group(1).strip()
-
-        # [[Note|Display text]]
-        if "|" in target:
-            note_name, display_text = target.split("|", 1)
-
-            note_name = note_name.strip()
-            display_text = display_text.strip()
-
-        else:
-            note_name = target
-            display_text = target
-
-        # Find the note
-        note = next(
-            (
-                note
-                for note in self.notes
-                if note.name == note_name
-            ),
-            None
-        )
-
-        # Note doesn't exist
-        if note is None:
-            element = etree.Element("span")
-            element.set("class", "broken-link")
-            element.text = m.group(0)
-
-            return (
-                element,
-                m.start(0),
-                m.end(0)
-            )
-
-        # Note exists
-        element = etree.Element("a")
-
-        element.set(
-            "href",
-            f"/note/{note.path}"
-        )
-
-        element.text = display_text
-
-        return (
-            element,
-            m.start(0),
-            m.end(0)
-        )
-
-
-class WikiLinkExtension(Extension):
-
-    def __init__(self, notes):
-        self.notes = notes
-        super().__init__()
-
-    def extendMarkdown(self, md):
-        processor = WikiLinkProcessor(
-            r"\[\[([^\]]+)\]\]",
-            md,
-            self.notes
-        )
-
-        md.inlinePatterns.register(
-            processor,
-            "wikilink",
-            175
-        )
-
-
-app = Flask(__name__)
 
 
 
@@ -177,9 +85,7 @@ def get_note(path: Path, notes) -> Note | None:
     for note in notes:
         if note.path == path:
             return note
-
     return None
-
 
 
 def render_note(note: Note, notes):
@@ -197,11 +103,11 @@ def render_note(note: Note, notes):
             "fenced_code",
             "tables",
             "toc",
+
             "nl2br",
             "pymdownx.arithmatex",
             WikiLinkExtension(notes),
-            ObsidianCalloutsExtension(),
-            
+            ObsidianCalloutsExtension(), 
         ],
         extension_configs={
         "toc": {
@@ -226,9 +132,7 @@ def render_note(note: Note, notes):
     )
 
 
-# ============================================================
-# Routes
-# ============================================================
+app = Flask(__name__)
 
 
 @app.route("/")
@@ -257,9 +161,7 @@ def note(path):
     return render_note(note, notes)
 
 
-# ============================================================
-# Run
-# ============================================================
+
 
 if __name__ == "__main__":
     app.run(
