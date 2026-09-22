@@ -15,7 +15,8 @@ load_dotenv()
 
 VAULT = Path(os.environ["VAULT"])
 INDEX_NOTE = VAULT / os.environ.get("INDEX_NOTE", "index.md")
-
+PORT = int(os.environ['DOCS_PORT'])
+DEBUG = bool(os.environ['DEBUG'])
 
 @dataclass
 class Note:
@@ -166,6 +167,6 @@ def note(path):
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
-        port=5000,
-        debug=True
+        port=PORT,
+        debug=DEBUG
     )

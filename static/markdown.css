@@ -3,8 +3,9 @@
    ========================================================= */
 
 .markdown {
-    line-height: 1.6;
+    line-height: 1.5;
     overflow-wrap: break-word;
+    color: #222;
 }
 
 
@@ -53,6 +54,8 @@
 
 .markdown p {
     margin: 0.8em 0;
+    text-align: justify;
+
 }
 
 
@@ -93,8 +96,8 @@
 .markdown blockquote {
     margin: 1.2em 0;
     padding: 0.5em 1em;
-    border-left: 3px solid #bbb;
-    color: #666;
+    border-left: 3px solid #2563eb;
+    color: #444;
 }
 
 .markdown blockquote p:first-child {
