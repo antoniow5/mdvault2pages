@@ -28,7 +28,17 @@
 </head>
 
 <body>
+:::writing{variant="standard" id="58321" title="Mobile header"}
+<div class="mobile-header">
+    <button class="menu-button" onclick="showSidebar()" aria-label="Открыть меню">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+</div>
 
+<div class = "overlay"></div>
 
 <main>
     {% block content %}{% endblock %}
@@ -44,7 +54,20 @@ MathJax = {
     }
 };
 </script>
+<script>
+function showSidebar() {
+    const sidebar = document.querySelector(".file-sidebar");
+    const overlay = document.querySelector(".overlay");
 
+    sidebar.classList.toggle("sidebar-visible");
+    overlay.classList.toggle("visible");
+}
+
+document.querySelector(".overlay").addEventListener("click", function () {
+    document.querySelector(".file-sidebar").classList.remove("sidebar-visible");
+    this.classList.remove("visible");
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>
