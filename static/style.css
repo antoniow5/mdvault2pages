@@ -23,11 +23,11 @@ html {
 
 body {
     margin: 0;
-    font-family: Helvetica, sans-serif;
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
     line-height: 1.5;
     font-size: 17px;
     max-width: 100%;
-    font-weight: 300;
+    font-weight: 400;
     color: rgb(32, 33, 34);
 }
 
@@ -481,7 +481,9 @@ main {
         z-index: 2;
         overflow-y: scroll;
         top: 0;
-        height: 100lvh;
+        /* height: 100lvh; */
+        height: 100%;   
+    
     }
 
     .sidebar-visible {
@@ -493,12 +495,13 @@ main {
         opacity: 0.5;
         position: fixed;
         top: 0;
-        /* bottom: 0; */
+        bottom: 0;
         right: 0;
         left: 0;
         display: none;
-        height: 100lvh;
+        /* height: 100lvh; */
         z-index: 1;
+        height: 100%;
     }
 
     .overlay.visible {
