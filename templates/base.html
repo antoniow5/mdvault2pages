@@ -28,7 +28,7 @@
 </head>
 
 <body>
-    
+
 <div class="mobile-header">
     <button class="menu-button" onclick="showSidebar()" aria-label="Открыть меню">
         <span></span>
@@ -61,11 +61,14 @@ function showSidebar() {
 
     sidebar.classList.toggle("sidebar-visible");
     overlay.classList.toggle("visible");
+    document.body.style="overflow: hidden;"
 }
 
 document.querySelector(".overlay").addEventListener("click", function () {
     document.querySelector(".file-sidebar").classList.remove("sidebar-visible");
     this.classList.remove("visible");
+    document.body.style=""
+
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
