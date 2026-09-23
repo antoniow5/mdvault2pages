@@ -24,11 +24,11 @@ html {
 body {
     margin: 0;
     font-family: 'Lato', Arial, Helvetica, sans-serif;
-    line-height: 1.5;
+    line-height: 1.6;
     font-size: 17px;
     max-width: 100%;
     font-weight: 400;
-    color: rgb(32, 33, 34);
+    color: #333;
 }
 
 .page {
