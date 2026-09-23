@@ -483,6 +483,7 @@ main {
         transition: transform 0.1s;
         width: 75%;
         z-index: 2;
+        overflow-y: scroll;
     }
 
     .sidebar-visible {
