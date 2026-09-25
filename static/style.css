@@ -23,16 +23,16 @@ html {
 
 body {
     margin: 0;
-    font-family: 'Lato', Arial, Helvetica, sans-serif;
-    line-height: 1.6;
-    font-size: 17px;
+    font-family: 'Noto Sans', sans-serif;   
+    /* line-height: 1.6; */
+    font-size: 16px;
     max-width: 100%;
     font-weight: 400;
     color: #333;
 }
 
 .page {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 50px;
     display: flex;
