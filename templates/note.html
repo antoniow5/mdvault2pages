@@ -5,61 +5,68 @@
 {% block content %}
 
 <aside class="file-sidebar">
-    <div class = "file-sidebar-inner">
-        <div class = "logo-container">
-        <a href="{{ url_for('index') }}" class="logo">
-            Связь 11
-        </a>
-
-        <span class="site-title">
-            База знаний
-        </span>
-        </div>
-    <div class="sidebar-title">
-        ФАЙЛЫ
-    </div>
-
-    {% macro render_tree(items) %}
-    <ul class="file-tree">
-
-        {% for item in items %}
-
-        {% if item.type == "directory" %}
-
-        <li>
-            <details closed>
-                <summary>
-                    <span class="folder-icon">></span>
-                    {{ item.name }}
-                </summary>
-
-                {{ render_tree(item.children) }}
-            </details>
-        </li>
-
-        {% else %}
-
-        <li>
-            <a href="{{ url_for('note', path=item.path) }}" class="{% if item.active %}active{% endif %}">
-                {{ item.name }}
+    <div class="file-sidebar-inner">
+        <div class="logo-container">
+            <a href="{{ url_for('index') }}" class="logo">
+                Связь 11
             </a>
-        </li>
 
-        {% endif %}
+            <span class="site-title">
+                База знаний
+            </span>
+        </div>
+        <div class="sidebar-title">
+            ФАЙЛЫ
+        </div>
 
-        {% endfor %}
+        {% macro render_tree(items) %}
+        <ul class="file-tree">
 
-    </ul>
-    {% endmacro %}
+            {% for item in items %}
 
-    {{ render_tree(tree) }}
-</div>
+            {% if item.type == "directory" %}
+
+            <li>
+                <details closed>
+                    <summary>
+                        <span class="folder-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                                viewBox="0 0 16 16"
+                                class="folder-icon__svg">
+                                <path fill="currentColor" fill-rule="evenodd"
+                                    d="M5.47 13.03a.75.75 0 0 1 0-1.06L9.44 8 5.47 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0"
+                                    clip-rule="evenodd"></path>
+                            </svg> </span>
+                        {{ item.name }}
+                    </summary>
+
+                    {{ render_tree(item.children) }}
+                </details>
+            </li>
+
+            {% else %}
+
+            <li>
+                <a href="{{ url_for('note', path=item.path) }}" class="{% if item.active %}active{% endif %}">
+                    {{ item.name }}
+                </a>
+            </li>
+
+            {% endif %}
+
+            {% endfor %}
+
+        </ul>
+        {% endmacro %}
+
+        {{ render_tree(tree) }}
+    </div>
 </aside>
 
 <div class="page">
 
     <article id="content" class="markdown">
-        <h1 class = "h1-main-title">{{note.name}}</h1>
+        <h1 class="h1-main-title">{{note.name}}</h1>
 
         {{ content | safe }}
 
