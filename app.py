@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 from dataclasses import dataclass
 
-from flask import Flask, abort, render_template
+from flask import Flask, abort, render_template, send_from_directory
 
 from extensions.callout_extension import ObsidianCalloutsExtension
 from extensions.wikilink_extension import WikiLinkExtension
@@ -107,7 +107,7 @@ def render_note(note: Note, notes):
 
             "nl2br",
             "pymdownx.arithmatex",
-            WikiLinkExtension(notes),
+            WikiLinkExtension(notes, VAULT),
             ObsidianCalloutsExtension(), 
         ],
         extension_configs={
@@ -162,6 +162,28 @@ def note(path):
     return render_note(note, notes)
 
 
+@app.route("/vault-files/<path:filename>")
+def vault_file(filename):
+    allowed_extensions = {".jpg", ".jpeg", ".png"}
+
+    file_path = (VAULT / filename).resolve()
+
+    # Prevent access outside the vault.
+    try:
+        file_path.relative_to(VAULT.resolve())
+    except ValueError:
+        abort(404)
+
+    if file_path.suffix.lower() not in allowed_extensions:
+        abort(404)
+
+    if not file_path.is_file():
+        abort(404)
+
+    return send_from_directory(
+        VAULT,
+        file_path.relative_to(VAULT.resolve()).as_posix(),
+    )
 
 
 if __name__ == "__main__":

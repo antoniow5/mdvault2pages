@@ -578,3 +578,16 @@
 .admonition.quote {
     --callout-color: 117, 117, 117;
 }
+
+
+.obsidian-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1rem auto;
+    border-radius: 8px;
+}
+
+.broken-link {
+    color: #dc2626;
+}
