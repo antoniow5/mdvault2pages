@@ -129,7 +129,8 @@ def render_note(note: Note, notes):
         toc=md.toc,
         note=note,
         tree=tree,
-        has_toc = bool(md.toc_tokens)
+        has_toc = bool(md.toc_tokens),
+        title=note.name,
     )
 
 

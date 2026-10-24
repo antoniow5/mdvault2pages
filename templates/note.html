@@ -6,17 +6,18 @@
 
 <aside class="file-sidebar">
     <div class="file-sidebar-inner">
+
+        <!-- Vault header -->
         <div class="logo-container">
             <a href="{{ url_for('index') }}" class="logo">
                 Связь 11
             </a>
-
-            <span class="site-title">
-                База знаний
-            </span>
+            <span class="site-title">База знаний</span>
         </div>
+
+        <!-- File explorer heading -->
         <div class="sidebar-title">
-            ФАЙЛЫ
+            <span>ФАЙЛЫ</span>
         </div>
 
         {% macro render_tree(items) %}
@@ -24,45 +25,80 @@
 
             {% for item in items %}
 
-            {% if item.type == "directory" %}
+                {% if item.type == "directory" %}
 
-            <li>
-                <details closed>
-                    <summary>
-                        <span class="folder-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
-                                viewBox="0 0 16 16"
-                                class="folder-icon__svg">
-                                <path fill="currentColor" fill-rule="evenodd"
-                                    d="M5.47 13.03a.75.75 0 0 1 0-1.06L9.44 8 5.47 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0"
-                                    clip-rule="evenodd"></path>
-                            </svg> </span>
-                        {{ item.name }}
-                    </summary>
+                <li class="tree-folder">
+                    <details>
+                        <summary>
+                            <span class="tree-chevron">
+                                <svg viewBox="0 0 24 24"
+                                     width="16" height="16"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6"/>
+                                </svg>
+                            </span>
 
-                    {{ render_tree(item.children) }}
-                </details>
-            </li>
+                            <svg class="tree-icon folder-svg"
+                                 viewBox="0 0 24 24"
+                                 width="16" height="16"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.7"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            </svg>
 
-            {% else %}
+                            <span class="tree-label">{{ item.name }}</span>
+                        </summary>
 
-            <li>
-                <a href="{{ url_for('note', path=item.path) }}" class="{% if item.active %}active{% endif %}">
-                    {{ item.name }}
-                </a>
-            </li>
+                        {{ render_tree(item.children) }}
+                    </details>
+                </li>
 
-            {% endif %}
+                {% else %}
+
+                <li class="tree-note">
+                    <a href="{{ url_for('note', path=item.path) }}"
+                       class="{% if item.active %}active{% endif %}">
+
+                        <span class="tree-chevron-placeholder"></span>
+
+                        <svg class="tree-icon note-svg"
+                             viewBox="0 0 24 24"
+                             width="16" height="16"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.7"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path d="M6 3h8l5 5v13H6z"/>
+                            <path d="M14 3v5h5"/>
+                            <path d="M9 13h6"/>
+                            <path d="M9 17h6"/>
+                        </svg>
+
+                        <span class="tree-label">{{ item.name }}</span>
+                    </a>
+                </li>
+
+                {% endif %}
 
             {% endfor %}
 
         </ul>
         {% endmacro %}
 
-        {{ render_tree(tree) }}
+        <nav class="file-explorer">
+            {{ render_tree(tree) }}
+        </nav>
+
     </div>
 </aside>
-
 <div class="page">
 
     <article id="content" class="markdown">

@@ -221,6 +221,32 @@ img {
    Knowledge layout
    ========================================================= */
 
+.site-header {
+    background: #ecf0f1;
+    font-family: "Raleway", sans-serif;
+
+}
+
+.site-header .container {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 10px 15px;
+}
+
+.logo {
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #2563eb;
+    font-family: 'Raleway', sans-serif;
+}
+
+.site-title {
+    color: #666;
+    font-size: 1rem;
+}
 
 /* =========================================================
    File sidebar
@@ -234,128 +260,169 @@ main {
     flex: 1;
 }
 
+
 .file-sidebar {
-    position: sticky;
-    top: 0;
-    align-self: start;
-    height: 100dvh;
-    /* height: calc(100vh - 40px); */
-
-    overflow-y: auto;
-    border-right: 1px solid #ddd;
-    /* padding-left: 80px; */
-    padding-right: 20px;
-    padding-top: 50px;
-    padding-left: 20px;
-    flex-basis: calc((95vw - 800px) / 2);
-    background: #ecf0f1;
-
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100dvh;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+  padding-left: 80px;
+  padding-right: 20px;
+  padding-top: 50px;
+  padding-left: 20px;
+  flex-basis: calc((95vw - 800px) / 2);
+  background: #ecf0f1;
+  font-size: 14px;
 }
 
 .file-sidebar-inner {
-    max-width: 290px;
-    margin-left: auto;
+    padding: 12px 8px 24px;
 }
 
 .sidebar-title {
-    margin-bottom: 12px;
-
-    color: #222;
-    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 8px;
+    color: #858b95;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 1px;
 }
 
 
+/* Remove browser defaults */
 .file-tree {
     list-style: none;
-    margin: 0;
     padding: 0;
+    margin: 0;
 }
 
 .file-tree ul {
     list-style: none;
+    padding: 0;
     margin: 0;
-    padding-left: 8px;
 }
 
-
-/* Folder */
-
-.file-tree details {
+/* Folder and note rows */
+.file-tree li {
     margin: 0;
+    padding: 0;
+}
+
+.file-tree summary,
+.file-tree a {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 29px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    color: #555c66;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.12s ease;
 }
 
 .file-tree summary {
-    padding: 6px 0px;
-
-    cursor: pointer;
     list-style: none;
-
-    color: #222;
-    font-size: 0.95rem;
+    user-select: none;
 }
 
 .file-tree summary::-webkit-details-marker {
     display: none;
 }
 
-.folder-icon {
-    display: inline-block;
-    width: 16px;
-
-    color: #222;
-    font-size: 0.75rem;
-    margin-right: 12px;
-    transition: transform 0.1s ease-in;
-
-
-}
-
-.folder-icon__svg {
-    vertical-align: bottom;
-}
-
-
-/* Files */
-
-.file-tree a {
-    display: block;
-
-    padding: 4px 6px 4px 25px;
-
-    color: #444;
-    text-decoration: none;
-    border-left: 1px solid #ddd;
-    font-size: 0.9rem;
-    line-height: 1.5rem;
-}
-
+/* Hover */
+.file-tree summary:hover,
 .file-tree a:hover {
-    /* background: #e2e6e7; */
-    color: #000;
-    border-left: 1px solid #2563eb;
-
+    background: #e9ebee;
+    color: #24292f;
 }
 
-.file-tree a.active {
-    color: #2563eb;
-    border-left: 1px solid #2563eb;
+/* Folder chevron */
+.tree-chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 14px;
+    height: 16px;
+    color: #858b95;
+    transition: transform 0.15s ease;
 }
 
-.file-icon {
-    display: inline-block;
-    width: 16px;
-
-    color: #999;
-    font-size: 0.45rem;
-    vertical-align: middle;
-    
-}
-
-details:open > summary > .folder-icon{
+.tree-folder details[open] > summary .tree-chevron {
     transform: rotate(90deg);
 }
+
+/* Icons */
+.tree-icon {
+    flex-shrink: 0;
+    color: #858b95;
+}
+
+.folder-svg {
+    color: #8a9099;
+}
+
+.note-svg {
+    color: #9298a2;
+}
+
+/* Labels */
+.tree-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+/* Folder children indentation */
+.tree-folder > details > ul {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 1px solid #e1e4e8;
+}
+
+/* Note links */
+.tree-note a {
+    width: 100%;
+}
+
+/* Active note */
+.file-tree a.active {
+    background: #e1e7f0;
+    color: #2459a9;
+    font-weight: 600;
+}
+
+.file-tree a.active .note-svg {
+    color: #3973c6;
+}
+
+/* Keep the active note visible */
+.file-tree a.active:hover {
+    background: #d9e2ef;
+}
+
+/* Scrollbar */
+.file-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.file-sidebar::-webkit-scrollbar-thumb {
+    background: #d0d4da;
+    border-radius: 4px;
+}
+
+.file-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #b7bdc6;
+}
+
 .sidebar-toggle {
     position: fixed;
     top: 85px;

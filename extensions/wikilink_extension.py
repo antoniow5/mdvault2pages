@@ -116,6 +116,16 @@ class WikiLinkProcessor(InlineProcessor):
             ),
             None,
         )
+        
+        if note is None:
+            note = next(
+                (
+                    note
+                    for note in self.notes
+                    if note.name == normalized_target
+                ),
+                None,
+            )
 
         if note is None:
             return self.broken_link(target, start, end)
