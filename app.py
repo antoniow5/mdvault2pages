@@ -165,7 +165,7 @@ def note(path):
 
 @app.route("/vault-files/<path:filename>")
 def vault_file(filename):
-    allowed_extensions = {".jpg", ".jpeg", ".png"}
+    allowed_extensions = {".jpg", ".jpeg", ".png", 'svg'}
 
     file_path = (VAULT / filename).resolve()
 
