@@ -43,7 +43,7 @@ class WikiLinkProcessor(InlineProcessor):
         )
 
     def render_image(self, target, display, start, end):
-        allowed_extensions = {".jpg", ".jpeg", ".png"}
+        allowed_extensions = {".jpg", ".jpeg", ".png", '.svg'}
 
         relative_path = Path(target)
 
